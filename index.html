@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <style>
 :root{
   --primary:#6b3f24;      /* 主色：咖啡棕 */
@@ -167,10 +168,12 @@ footer{padding:var(--s4) 0;text-align:center;color:var(--muted);font-size:14px}
     <h2>留下名字和电话</h2>
     <p class="lead">填好后会打开 WhatsApp，我们在那里告诉你日期和费用。</p>
     <form id="form" novalidate>
-      <label>名字<input id="name" type="text" autocomplete="name" placeholder="你的名字"></label>
-      <label>电话<input id="phone" type="tel" autocomplete="tel" placeholder="例如 0123456789"></label>
+      <label>名字<input id="name" type="text" maxlength="100" autocomplete="name" placeholder="你的名字"></label>
+      <label>电话<input id="phone" type="tel" maxlength="30" autocomplete="tel" placeholder="例如 0123456789"></label>
+      <div style="position:absolute;left:-9999px" aria-hidden="true"><label>网站<input id="website" type="text" tabindex="-1" autocomplete="off"></label></div>
       <div class="err" id="err" role="alert"></div>
-      <button class="btn" type="submit"><i data-lucide="send" class="icon"></i>用 WhatsApp 报名</button>
+      <button class="btn" id="submit" type="submit"><i data-lucide="send" class="icon"></i><span id="submit-text">用 WhatsApp 报名</span></button>
+      <a class="btn" id="wa" target="_blank" rel="noopener" hidden>点这里打开 WhatsApp</a>
     </form>
   </div>
 </section>
@@ -182,16 +185,35 @@ footer{padding:var(--s4) 0;text-align:center;color:var(--muted);font-size:14px}
 lucide.createIcons();
 // 示范号码，之后换成真的（有国码，不要 + 和空格）
 var WA_NUMBER = "60123456789";
-document.getElementById("form").addEventListener("submit", function(e){
+var SUPABASE_URL = "https://fmczytzsalhibhhftbbu.supabase.co";
+var SUPABASE_KEY = "sb_publishable_6YUGy6UfWsNGhFXOs1Hfig_pnDXgHf6"; // 公开的 publishable key
+var db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
+
+document.getElementById("form").addEventListener("submit", async function(e){
   e.preventDefault();
   var name = document.getElementById("name").value.trim();
   var phone = document.getElementById("phone").value.trim();
   var err = document.getElementById("err");
+  var btn = document.getElementById("submit");
+  var btnText = document.getElementById("submit-text");
+  var wa = document.getElementById("wa");
+  if(document.getElementById("website").value){ return; } // 机器人填了隐藏格子，不送
   if(!name){ err.textContent = "请填写名字"; return; }
   if(phone.replace(/\D/g,"").length < 8){ err.textContent = "请填写正确的电话"; return; }
   err.textContent = "";
+  btn.disabled = true; btnText.textContent = "送出中";
   var msg = "你好，我想报名周末手冲咖啡入门班。名字：" + name + "，电话：" + phone;
-  window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg), "_blank");
+  var waUrl = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
+  var tab = window.open("", "_blank"); // 先在点击时开好，避免被浏览器挡掉
+  var res = await db.from("signups").insert({ name: name, phone: phone });
+  btn.disabled = false; btnText.textContent = "用 WhatsApp 报名";
+  if(res.error){
+    if(tab) tab.close();
+    err.textContent = "送出没有成功，请检查网络后再试一次。";
+    return;
+  }
+  err.textContent = "谢谢你的报名！我们会尽快联络你。";
+  if(tab){ tab.location.href = waUrl; } else { wa.href = waUrl; wa.hidden = false; }
 });
 </script>
 </body>
