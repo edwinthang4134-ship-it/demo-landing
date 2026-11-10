@@ -18,7 +18,21 @@
 - CLAUDE.md 和 .claude/ 在 .vercelignore 里，不能放上网
 
 ## 规矩
-- landing page 是 index.html，CSS 和 JS 写在里面；图片放在 images/
+- landing page 是 index.html，后台是 admin.html；CSS 和 JS 都写在各自的文件里；图片放在 images/
 - 不用框架、不用 npm；外部库只能用 CDN，目前只允许 supabase-js 和 lucide
 - 密码、secret key、service_role key 不要叫我贴进对话
 - 改东西：先用一句话说要改哪里，改完用一句话说动了什么；要删文件、要跑 rm，先问我
+
+## 后台
+- 后台网址：正式网址 + /admin.html（有 noindex）。Supabase 项目：demo-landing（ref fmczytzsalhibhhftbbu，Singapore）
+- 谁看得到什么：
+  - 没登录的人（anon）：只能往 signups 新增 name、phone，不能读、不能改、不能删
+  - 登录的人：email 在 admins 表里，才能读 signups，才能改 status 和 notes
+  - 谁都不能删（没有给 delete）
+- grant 和 policy：signups 先 revoke all（anon、authenticated），anon 只 grant insert (name, phone) + 一条 insert policy；authenticated 只 grant select 和 update (status, notes)，policy 都要求 email 在 admins 里。admins 表：authenticated 只能 select 自己那一行
+- status 只准：新进来、联络了、成交、没兴趣
+- index.html 的 createClient 一直要有 auth: { persistSession: false, autoRefreshToken: false }（不然登录过后台的浏览器，报名会被拒绝）；admin.html 不加（它要记住登录）
+- 改数据库只能加、不能删：不 drop、不 delete、不 truncate
+- 加员工：我在 Supabase 建好他的账号（Authentication → Users，Auto confirm），跟你说 email；你确认他 confirmed 了，再把 email（小写）加进 admins
+- Authentication 里的「Allow new users to sign up」一直关着
+- 后台跳去 WhatsApp：0 开头的号码，0 换成 60
