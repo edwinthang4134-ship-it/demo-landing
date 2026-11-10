@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>周末手冲咖啡入门班（示范页）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<style>
+:root{
+  --primary:#6b3f24;      /* 主色：咖啡棕 */
+  --accent:#d98a2b;       /* 强调色：焦糖橙 */
+  --bg:#fbf6ef;
+  --surface:#ffffff;
+  --text:#2b1d14;
+  --muted:#6f6258;
+  --line:#e8dccd;
+  --s1:8px; --s2:16px; --s3:24px; --s4:40px; --s5:64px; --s6:96px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{font-family:"Noto Sans SC",sans-serif;font-size:16px;line-height:1.7;color:var(--text);background:var(--bg)}
+h1,h2,h3{font-family:"Noto Serif SC",serif;line-height:1.3;color:var(--primary)}
+h1{font-size:34px}
+h2{font-size:28px;margin-bottom:var(--s3)}
+h3{font-size:20px;margin-bottom:var(--s1)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--s2)}
+section{padding:var(--s5) 0}
+.lead{color:var(--muted);margin-bottom:var(--s4)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s1);min-height:48px;padding:0 var(--s3);border:0;border-radius:8px;background:var(--accent);color:#fff;font:700 16px "Noto Sans SC",sans-serif;text-decoration:none;cursor:pointer}
+.btn:hover{filter:brightness(.94)}
+.btn.small{min-height:48px;padding:0 var(--s2)}
+.icon{width:24px;height:24px}
+
+/* 顶栏 */
+header{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;min-height:64px}
+.brand{display:flex;align-items:center;gap:var(--s1);font-family:"Noto Serif SC",serif;font-weight:700;color:var(--primary)}
+
+/* 首屏 */
+.hero{padding:var(--s5) 0}
+.hero .wrap{display:grid;gap:var(--s4);align-items:center}
+.hero p{margin:var(--s2) 0 var(--s3);color:var(--muted);font-size:18px}
+.hero-art{display:flex;align-items:center;justify-content:center;min-height:260px;border-radius:16px;background:linear-gradient(135deg,var(--primary),#a8693c);color:#fff}
+.hero-art svg{width:96px;height:96px}
+
+/* 卡片 */
+.grid{display:grid;gap:var(--s3)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:var(--s3)}
+.card .ic{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--bg);color:var(--accent);margin-bottom:var(--s2)}
+.card p{color:var(--muted)}
+
+/* 流程 */
+.steps{list-style:none;display:grid;gap:var(--s3);counter-reset:s}
+.steps li{counter-increment:s;position:relative;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:var(--s3) var(--s3) var(--s3) 80px}
+.steps li::before{content:counter(s);position:absolute;left:var(--s3);top:var(--s3);width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.steps p{color:var(--muted)}
+
+.alt{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.who{list-style:none;display:grid;gap:var(--s2);margin-bottom:var(--s4)}
+.who li{display:flex;gap:var(--s2);align-items:flex-start}
+.who svg{flex:none;color:var(--accent);margin-top:2px}
+
+/* 表单 */
+.signup{background:var(--primary);color:#fff}
+.signup h2{color:#fff}
+.signup .lead{color:#ead9c8}
+form{display:grid;gap:var(--s2);max-width:480px}
+label{font-weight:500}
+input{width:100%;min-height:48px;padding:0 var(--s2);border:1px solid var(--line);border-radius:8px;font:16px "Noto Sans SC",sans-serif;margin-top:var(--s1)}
+.err{min-height:24px;color:#ffd9a8;font-weight:500}
+footer{padding:var(--s4) 0;text-align:center;color:var(--muted);font-size:14px}
+
+/* 平板 768 */
+@media (min-width:768px){
+  h1{font-size:44px}
+  h2{font-size:32px}
+  .grid.three{grid-template-columns:repeat(3,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .hero-art{min-height:320px}
+}
+/* 电脑 1024+ */
+@media (min-width:1024px){
+  section{padding:var(--s6) 0}
+  .hero .wrap{grid-template-columns:1.1fr 1fr;gap:var(--s5)}
+  h1{font-size:52px}
+  .hero-art{min-height:420px}
+  .steps{grid-template-columns:repeat(4,1fr)}
+  .steps li{padding:80px var(--s3) var(--s3)}
+  .steps li::before{top:var(--s3)}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);align-items:start}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand"><i data-lucide="coffee" class="icon"></i>慢一点咖啡</div>
+    <a class="btn small" href="#signup">马上报名</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>周末两小时，学会在家煮一杯好咖啡</h1>
+      <p>不用懂行，也不用买贵的器材。从磨豆、冲煮到闻香，一步一步带你做。</p>
+      <a class="btn" href="#signup"><i data-lucide="arrow-right" class="icon"></i>我要报名</a>
+    </div>
+    <div class="hero-art" aria-hidden="true"><i data-lucide="coffee"></i></div>
+  </div>
+</section>
+
+<section class="alt" id="learn">
+  <div class="wrap">
+    <h2>你会学到什么</h2>
+    <p class="lead">三件事，回家就能用。</p>
+    <div class="grid three">
+      <div class="card"><div class="ic"><i data-lucide="wheat"></i></div><h3>认识咖啡豆</h3><p>浅烘、深烘有什么不同，怎么挑到适合自己口味的豆子。</p></div>
+      <div class="card"><div class="ic"><i data-lucide="droplets"></i></div><h3>手冲的手法</h3><p>水温、水流、时间怎么控制，亲手冲出一杯。</p></div>
+      <div class="card"><div class="ic"><i data-lucide="smile"></i></div><h3>品出好味道</h3><p>学会形容酸、甜、苦，知道自己喜欢什么。</p></div>
+    </div>
+    <p style="margin-top:var(--s4)"><a class="btn" href="#signup">看看怎么报名</a></p>
+  </div>
+</section>
+
+<section id="flow">
+  <div class="wrap">
+    <h2>课程怎么上</h2>
+    <p class="lead">一堂课，四个步骤。</p>
+    <ol class="steps">
+      <li><h3>认识器材</h3><p>滤杯、壶、秤，每样东西做什么用。</p></li>
+      <li><h3>磨豆与闻香</h3><p>亲手磨豆，闻一闻新鲜咖啡粉的香气。</p></li>
+      <li><h3>动手冲煮</h3><p>老师示范一次，你自己再冲一次。</p></li>
+      <li><h3>试喝与交流</h3><p>比较不同冲法的味道，问什么都可以。</p></li>
+    </ol>
+    <p style="margin-top:var(--s4)"><a class="btn" href="#signup">我要报名</a></p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <h2>适合这样的你</h2>
+        <ul class="who">
+          <li><i data-lucide="check-circle-2"></i><span>每天喝咖啡，但想知道自己在喝什么</span></li>
+          <li><i data-lucide="check-circle-2"></i><span>买了手冲器材，却一直冲不好</span></li>
+          <li><i data-lucide="check-circle-2"></i><span>完全没碰过，想找一个轻松的开始</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>有问题？</h3>
+        <p style="margin-bottom:var(--s3)">日期、地点、费用，都可以直接问我们。</p>
+        <a class="btn" href="#signup"><i data-lucide="message-circle" class="icon"></i>留下联系方式</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="signup" id="signup">
+  <div class="wrap">
+    <h2>留下名字和电话</h2>
+    <p class="lead">填好后会打开 WhatsApp，我们在那里告诉你日期和费用。</p>
+    <form id="form" novalidate>
+      <label>名字<input id="name" type="text" autocomplete="name" placeholder="你的名字"></label>
+      <label>电话<input id="phone" type="tel" autocomplete="tel" placeholder="例如 0123456789"></label>
+      <div class="err" id="err" role="alert"></div>
+      <button class="btn" type="submit"><i data-lucide="send" class="icon"></i>用 WhatsApp 报名</button>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">示范页面 · 文字与号码均为示范用</div></footer>
+
+<script>
+lucide.createIcons();
+// 示范号码，之后换成真的（有国码，不要 + 和空格）
+var WA_NUMBER = "60123456789";
+document.getElementById("form").addEventListener("submit", function(e){
+  e.preventDefault();
+  var name = document.getElementById("name").value.trim();
+  var phone = document.getElementById("phone").value.trim();
+  var err = document.getElementById("err");
+  if(!name){ err.textContent = "请填写名字"; return; }
+  if(phone.replace(/\D/g,"").length < 8){ err.textContent = "请填写正确的电话"; return; }
+  err.textContent = "";
+  var msg = "你好，我想报名周末手冲咖啡入门班。名字：" + name + "，电话：" + phone;
+  window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg), "_blank");
+});
+</script>
+</body>
+</html>
